@@ -61,7 +61,6 @@ class Generator
   public:
     enum Result {
       kSuccess = 0,
-      kBadInput,
       kInvalidCharacter,
       kOutOfMemory
     };
@@ -72,19 +71,52 @@ class Generator
     static double wideToNarrowRatio() { return s_w2nr; }
     static void setWideToNarrowRatio(double ratio);
 
+    Generator()
+      : m_height(100),
+        m_narrowWidth(3),
+        m_wideWidth(m_narrowWidth * wideToNarrowRatio()) {}
+
+    int height() const { return m_height; }
+    void setHeight(int height)
+    {
+      m_height = height < kMinHeight ? kMinHeight : height;
+    }
+
+    int narrowWidth() const { return m_narrowWidth; }
+    void setNarrowWidth(int narrowWidth)
+    {
+      m_narrowWidth = narrowWidth < kMinNarrowWidth
+                      ? kMinNarrowWidth : narrowWidth;
+      m_wideWidth = m_narrowWidth * wideToNarrowRatio();
+    }
+
     const Bitmap &bitmap() const { return m_bitmap; }
 
     /**
-     * Generetes a barcode for the given text. Generated barcode can be verified
+     * Generates a barcode for the given text. Generated barcode can be verified
      * using any online tool (e.g. http://www.onlinebarcodereader.com/).
+     */
+    int generate(const std::string &text);
+
+    /**
+     * @overload
+     * Equivalent to subsequent calls of:
+     * @code
+     * setHeight(height);
+     * setNarrowWidth(narrowWidth);
+     * generate(text)
+     * @endcode
      * @return 0 on success, see Result enum for all possible values
      */
     int generate(const string &text, //!< text to encode
-                 int height,         //!< required bitmap height
-                 int narrowWidth     //!< width of narrow bars
+                 int height,         //!< bitmap height, pixels
+                 int narrowWidth     //!< width of narrow bars, pixels
                  );
 
   private:
+    static const int kMinHeight = 1;
+    static const int kMinNarrowWidth = 1;
+
     static double s_w2nr;
 
     /**
@@ -93,10 +125,12 @@ class Generator
      */
     static const char *encode(char ch);
 
-    bool prepareBitmap(const string &text, int height);
+    bool prepareBitmap(const string &text);
     bool drawChar(char ch);
 
-    int m_narrowWidth, m_wideWidth, m_penPos;
+    int m_height;
+    int m_narrowWidth, m_wideWidth;
+    int m_penPos;
     Bitmap m_bitmap;
 };
 

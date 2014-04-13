@@ -44,8 +44,9 @@ void Dialog::draw()
   Generator::setWideToNarrowRatio(ui->ratio->value());
 
   Generator g;
-  int rv = g.generate(ui->input->text().toUtf8().data(),
-                      ui->height->value(), ui->narrowWidth->value());
+  g.setHeight(ui->height->value());
+  g.setNarrowWidth(ui->narrowWidth->value());
+  int rv = g.generate(ui->input->text().toUtf8().data());
 
   if (rv == 0) {
     QImage i;
@@ -54,9 +55,6 @@ void Dialog::draw()
   } else {
     ui->view->clear();
     switch (rv) {
-    case Generator::kBadInput:
-      //- should never get here in this UI
-      break;
     case Generator::kInvalidCharacter:
       ui->view->setText("Invalid character detected in the input!");
       break;

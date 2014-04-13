@@ -83,15 +83,9 @@ void Generator::setWideToNarrowRatio(double ratio)
   s_w2nr = ratio;
 }
 
-int Generator::generate(const string &text, int height, int narrowWidth)
+int Generator::generate(const string &text)
 {
-  if (height < 1 || narrowWidth < 1)
-    return kBadInput;
-
-  m_narrowWidth = narrowWidth;
-  m_wideWidth = m_narrowWidth * wideToNarrowRatio();
-
-  if (!prepareBitmap(text, height))
+  if (!prepareBitmap(text))
     return kOutOfMemory;
 
   m_penPos = m_narrowWidth;     //- margin
@@ -105,6 +99,13 @@ int Generator::generate(const string &text, int height, int narrowWidth)
   drawChar('*');                //- stop delimiter
 
   return kSuccess;
+}
+
+int Generator::generate(const string &text, int height, int narrowWidth)
+{
+  setHeight(height);
+  setNarrowWidth(narrowWidth);
+  return generate(text);
 }
 
 const char *Generator::encode(char ch)
@@ -202,7 +203,7 @@ const char *Generator::encode(char ch)
   return NULL;
 }
 
-bool Generator::prepareBitmap(const std::string &text, int height)
+bool Generator::prepareBitmap(const std::string &text)
 {
   const int kNumNarrowsInChar = 6;
   const int kNumWidesInChar   = 3;
@@ -218,7 +219,7 @@ bool Generator::prepareBitmap(const std::string &text, int height)
               numGaps * m_narrowWidth +
               2 * m_narrowWidth;        //- margin
 
-  return m_bitmap.resize(width, height);
+  return m_bitmap.resize(width, m_height);
 }
 
 bool Generator::drawChar(char ch)
