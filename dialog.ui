@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Code39 Barcode Generator</string>
+   <string>Code 39 Barcode Generator</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="0">
