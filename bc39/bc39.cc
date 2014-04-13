@@ -29,21 +29,21 @@ bool Bitmap::resize(int width, int height)
   if (m_width > 0 && m_height > 0) {
     std::stringstream stream;
 
-    /// header
+    //- header
     stream << "/* XPM */\n";
     stream << "static char *[] = {\n";
     stream << "\"" << m_width << " " << m_height << " 2 1\",\n";
     stream << "\"* c #000000\",\n";
     stream << "\". c #ffffff\",\n";
 
-    /// data
-    m_offset = stream.str().size();        /// offset of image data within XPM
+    //- data
+    m_offset = stream.str().size();        //- offset of image data within XPM
     string whiteRaw(m_width, '.');
     for (int i = 0; i < m_height - 1; i++)
       stream << '"' << whiteRaw << "\",\n";
-    stream << '"' << whiteRaw << "\"\n";   /// last raw without trailing ','
+    stream << '"' << whiteRaw << "\"\n";   //- last raw without trailing ','
 
-    /// footer
+    //- footer
     stream << "}\n";
 
     m_data = stream.str();
@@ -54,7 +54,7 @@ bool Bitmap::resize(int width, int height)
 
 void Bitmap::drawBar(int x, int width)
 {
-  /// validate parameters
+  //- validate parameters
   if (x < 0)
     x = 0;
   if (x >= m_width)
@@ -62,7 +62,7 @@ void Bitmap::drawBar(int x, int width)
   if (x + width > m_width)
     width = m_width - x;
 
-  /// draw it
+  //- draw it
   for (int y = 0; y < m_height; ++y)
     drawLine(x, y, width);
 }
@@ -97,15 +97,15 @@ int Generator::generate(const string &text, int height, int narrowWidth)
   if (!prepareBitmap(text, height))
     return kOutOfMemory;
 
-  m_penPos = m_narrowWidth;     /// margin
-  drawChar('*');
-  m_penPos += m_narrowWidth;    ///. gap
+  m_penPos = m_narrowWidth;     //- margin
+  drawChar('*');                //- start delimiter
+  m_penPos += m_narrowWidth;    //- gap
   for (unsigned i = 0; i < text.size(); i++) {
     if (!drawChar(text[i]))
       return kInvalidCharacter;
-    m_penPos += m_narrowWidth;  /// gap
+    m_penPos += m_narrowWidth;  //- gap
   }
-  drawChar('*');
+  drawChar('*');                //- stop delimiter
 
   return kSuccess;
 }
@@ -210,7 +210,7 @@ bool Generator::prepareBitmap(const std::string &text, int height)
   const int kNumNarrowsInChar = 6;
   const int kNumWidesInChar   = 3;
 
-  int numChars = text.size() + 2;     /// + two stop chars
+  int numChars = text.size() + 2;       //- + two stop chars
   int numGaps = numChars - 1;
 
   int numNarrows = numChars * kNumNarrowsInChar + numGaps;
@@ -219,7 +219,7 @@ bool Generator::prepareBitmap(const std::string &text, int height)
   int width = numNarrows * m_narrowWidth +
               numWides * m_wideWidth +
               numGaps * m_narrowWidth +
-              2 * m_narrowWidth;        /// margin
+              2 * m_narrowWidth;        //- margin
 
   return m_bitmap.resize(width, height);
 }
@@ -244,4 +244,4 @@ bool Generator::drawChar(char ch)
   return true;
 }
 
-} /// namespace bc39
+} //- namespace bc39

@@ -23,7 +23,7 @@ namespace bc39 {
 using std::string;
 
 /**
- * @brief Simple monochrome bitmap implementation.
+ * Simple monochrome bitmap implementation.
  */
 class Bitmap
 {
@@ -62,9 +62,9 @@ class Bitmap
     int offset(int x, int y) const
     {
       return
-          m_offset +            /// skip the header
-          (m_width + 4) * y +   /// leading '"', trailing '",\n'
-          x + 1;                /// leading '"'
+          m_offset +            //- skip the header
+          (m_width + 4) * y +   //- leading '"', trailing '",\n'
+          x + 1;                //- leading '"'
     }
 
     string m_data;
@@ -72,7 +72,8 @@ class Bitmap
 };
 
 /**
- * @brief The Code 39 generator.
+ * @brief The Code 39 generator (refer to
+ * http://en.wikipedia.org/wiki/Code_39 for detailed description).
  */
 class Generator
 {
@@ -84,6 +85,9 @@ class Generator
       kOutOfMemory
     };
 
+    /**
+     * Ratio between wide and narrow bars' width, must be in range [2, 3]
+     */
     static double wideToNarrowRatio() { return s_w2nr; }
     static void setWideToNarrowRatio(double ratio);
 
@@ -96,12 +100,10 @@ class Generator
      */
     int generate(const string &text, //!< text to encode
                  int height,         //!< required bitmap height
-                 int narrowWidth);   //!< width of narrow bars
+                 int narrowWidth     //!< width of narrow bars
+                 );
 
   private:
-    /**
-     * Ratio between wide and narrow bars' width, must be in range [2, 3]
-     */
     static double s_w2nr;
 
     /**
@@ -117,4 +119,4 @@ class Generator
     Bitmap m_bitmap;
 };
 
-} /// namespace bc39
+} //- namespace bc39
