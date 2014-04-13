@@ -63,16 +63,13 @@ void Bitmap::drawBar(int x, int width)
     width = m_width - x;
 
   //- draw it
-  for (int y = 0; y < m_height; ++y)
-    drawLine(x, y, width);
-}
-
-void Bitmap::drawLine(int x, int y, int length)
-{
-  int begin = offset(x, y);
-  int end = begin + length;
-  for (int i = begin; i < end; ++i)
-    m_data[i] = '*';
+  int begin = m_offset + x + 1;   //- first line, x position, skip leading '"'
+  for (int y = 0; y < m_height; ++y) {
+    int end = begin + width;
+    for (int j = begin; j < end; ++j)
+      m_data[j] = '*';
+    begin += m_width + 4;         //- go to the next line
+  }
 }
 
 double Generator::s_w2nr = 3.0f;

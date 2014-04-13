@@ -42,30 +42,11 @@ class Bitmap
     bool resize(int width, int height);
 
     /**
-     * Draws a black horizontal line.
-     * @param x starting x
-     * @param y starting y
-     * @param length line length
-     */
-    void drawLine(int x, int y, int length);
-
-    /**
      * Draws a black rectangle at given position, its height == m_height
      * @param x rectangle's left position
      * @param width
      */
     void drawBar(int x, int width);
-
-    /**
-     * @brief Calculates the offset of given point in the XPM data
-     */
-    int offset(int x, int y) const
-    {
-      return
-          m_offset +            //- skip the header
-          (m_width + 4) * y +   //- leading '"', trailing '",\n'
-          x + 1;                //- leading '"'
-    }
 
     string m_data;
     int m_width, m_height, m_offset;
