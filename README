@@ -2,3 +2,5 @@ bc39
 ====
 
 C++ interface for generating Code 39 barcodes.
+
+Usage example is in Dialog::draw() method, file dialog.cc.
