@@ -55,7 +55,7 @@ void Dialog::draw()
     ui->view->clear();
     switch (rv) {
     case Generator::kBadInput:
-      /// should never get here in this UI
+      //- should never get here in this UI
       break;
     case Generator::kInvalidCharacter:
       ui->view->setText("Invalid character detected in the input!");
@@ -69,7 +69,11 @@ void Dialog::draw()
 
 void Dialog::save()
 {
-  QString fileName = QFileDialog::getSaveFileName(this);
+  QString fileName = QFileDialog::getSaveFileName(
+                       this,
+                       "Save As PNG...",
+                       ".",
+                       QString("PNG files (*.png);;All files (*)"));
   if (!fileName.isEmpty()) {
     if (!fileName.endsWith(".png"))
       fileName.append(".png");

@@ -127,7 +127,7 @@
    <item row="2" column="5">
     <widget class="QToolButton" name="save">
      <property name="text">
-      <string>PNG</string>
+      <string>Save PNG</string>
      </property>
     </widget>
    </item>
