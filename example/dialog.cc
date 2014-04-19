@@ -20,7 +20,7 @@
 #include <QDebug>
 #include <QFileDialog>
 
-#include <bc39/bc39.h>
+#include <bc39.h>
 
 Dialog::Dialog(QWidget *parent) :
   QDialog(parent),
